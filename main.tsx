@@ -4,6 +4,7 @@ import './style.css';
 import 'react-calendar/dist/Calendar.css';
 import Calendar from 'react-calendar';
 import { Printer, Edit, RotateCcw, CalendarDays, Download, Upload } from 'lucide-react';
+import citiesData from './cities.json';
 
 interface FormData {
   contractCity: string;
@@ -121,6 +122,11 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem('contractFormData', JSON.stringify(formData));
   }, [formData]);
+
+  const [streetsData, setStreetsData] = useState<Record<string, string[]>>({});
+  useEffect(() => {
+    import('./streets.json').then(m => setStreetsData(m.default as Record<string, string[]>));
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -251,8 +257,8 @@ export default function App() {
 
           <Section title="המושכר">
             <InputField label="מספר חדרים" name="propertyRooms" value={formData.propertyRooms} onChange={handleChange} onlyNumeric />
-            <InputField label="רחוב ומספר" name="propertyAddress" value={formData.propertyAddress} onChange={handleChange} />
-            <InputField label="עיר" name="propertyCity" value={formData.propertyCity} onChange={handleChange} />
+            <AutocompleteField label="עיר" name="propertyCity" value={formData.propertyCity} onChange={handleChange} suggestions={citiesData} placeholder="הקלד שם עיר..." />
+            <AutocompleteField label="רחוב ומספר" name="propertyAddress" value={formData.propertyAddress} onChange={handleChange} suggestions={formData.propertyCity ? (streetsData[formData.propertyCity] ?? []) : []} placeholder="הקלד שם רחוב..." />
             <InputField label="מטרת השכירות" name="purpose" value={formData.purpose} onChange={handleChange} />
             <TextAreaField label="ריהוט וציוד בנכס" name="inventory" value={formData.inventory} onChange={handleChange} />
           </Section>
@@ -561,6 +567,62 @@ const DatePickerField = ({ label, name, value, onDateChange }: DatePickerFieldPr
             locale="he-IL"
           />
         </div>
+      )}
+    </div>
+  );
+};
+
+type AutocompleteFieldProps = {
+  label: string;
+  name: keyof FormData;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  suggestions: string[];
+  placeholder?: string;
+};
+const AutocompleteField = ({ label, name, value, onChange, suggestions, placeholder }: AutocompleteFieldProps) => {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  const filtered = value.length >= 1
+    ? suggestions.filter(s => s.includes(value)).slice(0, 12)
+    : [];
+
+  useEffect(() => {
+    const close = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener('mousedown', close);
+    return () => document.removeEventListener('mousedown', close);
+  }, []);
+
+  return (
+    <div className="flex flex-col relative" ref={ref}>
+      <label className="text-sm text-slate-600 font-medium mb-1">{label}</label>
+      <input
+        type="text"
+        name={name}
+        value={value}
+        onChange={(e) => { onChange(e); setOpen(true); }}
+        onFocus={() => setOpen(true)}
+        placeholder={placeholder}
+        autoComplete="off"
+        className="border border-slate-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-shadow text-sm"
+      />
+      {open && filtered.length > 0 && (
+        <ul className="absolute z-50 top-full mt-1 bg-white border border-slate-200 rounded-lg shadow-xl w-full max-h-48 overflow-y-auto">
+          {filtered.map(s => (
+            <li key={s}
+              className="px-3 py-2 hover:bg-blue-50 cursor-pointer text-sm"
+              onMouseDown={(e) => {
+                e.preventDefault();
+                onChange({ target: { name, value: s } } as unknown as React.ChangeEvent<HTMLInputElement>);
+                setOpen(false);
+              }}>
+              {s}
+            </li>
+          ))}
+        </ul>
       )}
     </div>
   );
