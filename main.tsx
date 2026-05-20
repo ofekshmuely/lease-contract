@@ -197,6 +197,18 @@ export default function App() {
     );
   };
 
+  const AddressB = ({ prefix, minWidth = 'min-w-[220px]' }: { prefix: string; minWidth?: string }) => {
+    const street = formData[`${prefix}Street` as keyof FormData];
+    const houseNum = formData[`${prefix}HouseNum` as keyof FormData];
+    const city = formData[`${prefix}City` as keyof FormData];
+    const full = [street, houseNum].filter(Boolean).join(' ') + (city ? `, ${city}` : '');
+    return (
+      <span className={`inline-block border-b border-black font-bold text-blue-900 print:text-black leading-tight px-1 ${full ? '' : minWidth}`}>
+        {full || ' '}
+      </span>
+    );
+  };
+
   return (
     <div className="flex min-h-screen bg-slate-100 flex-col md:flex-row print:block print:h-auto print:bg-white" dir="rtl">
 
@@ -356,9 +368,9 @@ export default function App() {
             <div>
               <span className="font-bold">בין: </span>
               <div className="mt-1 pr-6 space-y-1">
-                <div>1. שם: <B field="landlord1Name" minWidth="min-w-[180px]" /> &nbsp;&nbsp; ת.ז: <B field="landlord1Id" minWidth="min-w-[110px]" /> &nbsp;&nbsp; כתובת: <B field="landlord1Street" minWidth="min-w-[120px]" />{formData.landlord1HouseNum && <> <B field="landlord1HouseNum" minWidth="min-w-[30px]" /></>}{formData.landlord1City && <>, <B field="landlord1City" minWidth="min-w-[80px]" /></>}</div>
+                <div>1. שם: <B field="landlord1Name" minWidth="min-w-[180px]" /> &nbsp;&nbsp; ת.ז: <B field="landlord1Id" minWidth="min-w-[110px]" /> &nbsp;&nbsp; כתובת: <AddressB prefix="landlord1" /></div>
                 {formData.landlord2Name && (
-                  <div>2. שם: <B field="landlord2Name" minWidth="min-w-[180px]" /> &nbsp;&nbsp; ת.ז: <B field="landlord2Id" minWidth="min-w-[110px]" /> &nbsp;&nbsp; כתובת: <B field="landlord2Street" minWidth="min-w-[120px]" />{formData.landlord2HouseNum && <> <B field="landlord2HouseNum" minWidth="min-w-[30px]" /></>}{formData.landlord2City && <>, <B field="landlord2City" minWidth="min-w-[80px]" /></>}</div>
+                  <div>2. שם: <B field="landlord2Name" minWidth="min-w-[180px]" /> &nbsp;&nbsp; ת.ז: <B field="landlord2Id" minWidth="min-w-[110px]" /> &nbsp;&nbsp; כתובת: <AddressB prefix="landlord2" /></div>
                 )}
                 <div className="font-bold pt-1">ביחד ולחוד, מצד אחד (להלן: "המשכיר")</div>
               </div>
@@ -366,9 +378,9 @@ export default function App() {
             <div>
               <span className="font-bold">לבין: </span>
               <div className="mt-1 pr-6 space-y-1">
-                <div>1. שם: <B field="tenant1Name" minWidth="min-w-[180px]" /> &nbsp;&nbsp; ת.ז: <B field="tenant1Id" minWidth="min-w-[110px]" /> &nbsp;&nbsp; כתובת: <B field="tenant1Street" minWidth="min-w-[120px]" />{formData.tenant1HouseNum && <> <B field="tenant1HouseNum" minWidth="min-w-[30px]" /></>}{formData.tenant1City && <>, <B field="tenant1City" minWidth="min-w-[80px]" /></>}</div>
+                <div>1. שם: <B field="tenant1Name" minWidth="min-w-[180px]" /> &nbsp;&nbsp; ת.ז: <B field="tenant1Id" minWidth="min-w-[110px]" /> &nbsp;&nbsp; כתובת: <AddressB prefix="tenant1" /></div>
                 {formData.tenant2Name && (
-                  <div>2. שם: <B field="tenant2Name" minWidth="min-w-[180px]" /> &nbsp;&nbsp; ת.ז: <B field="tenant2Id" minWidth="min-w-[110px]" /> &nbsp;&nbsp; כתובת: <B field="tenant2Street" minWidth="min-w-[120px]" />{formData.tenant2HouseNum && <> <B field="tenant2HouseNum" minWidth="min-w-[30px]" /></>}{formData.tenant2City && <>, <B field="tenant2City" minWidth="min-w-[80px]" /></>}</div>
+                  <div>2. שם: <B field="tenant2Name" minWidth="min-w-[180px]" /> &nbsp;&nbsp; ת.ז: <B field="tenant2Id" minWidth="min-w-[110px]" /> &nbsp;&nbsp; כתובת: <AddressB prefix="tenant2" /></div>
                 )}
                 <div className="font-bold pt-1">ביחד ולחוד, מצד שני (להלן: "השוכר")</div>
               </div>
@@ -463,9 +475,7 @@ export default function App() {
                       <span className="font-bold">{label}: </span>
                       שם: <B field={n('Name')} minWidth="min-w-[160px]" />
                       &nbsp;&nbsp; ת.ז: <B field={n('Id')} minWidth="min-w-[110px]" />
-                      &nbsp;&nbsp; כתובת: <B field={n('Street')} minWidth="min-w-[120px]" />
-                      {formData[n('HouseNum')] && <> <B field={n('HouseNum')} minWidth="min-w-[30px]" /></>}
-                      {formData[n('City')] && <>, <B field={n('City')} minWidth="min-w-[80px]" /></>}
+                      &nbsp;&nbsp; כתובת: <AddressB prefix={`guarantor${num}`} />
                     </div>
                     <div>טלפון: <B field={n('Phone')} minWidth="min-w-[130px]" /></div>
                     <div className="mt-16 flex justify-end">חתימה: <span className="inline-block border-b border-black min-w-[220px] mr-2">&nbsp;</span></div>
