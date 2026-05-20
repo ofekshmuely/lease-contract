@@ -22,7 +22,8 @@ interface FormData {
   tenant2Id: string;
   tenant2Address: string;
   propertyRooms: string;
-  propertyAddress: string;
+  propertyStreet: string;
+  propertyHouseNum: string;
   propertyCity: string;
   leaseMonths: string;
   leaseStartDate: string;
@@ -62,7 +63,7 @@ const initialData: FormData = {
   landlord2Name: '', landlord2Id: '', landlord2Address: '',
   tenant1Name: '', tenant1Id: '', tenant1Address: '',
   tenant2Name: '', tenant2Id: '', tenant2Address: '',
-  propertyRooms: '', propertyAddress: '', propertyCity: '',
+  propertyRooms: '', propertyStreet: '', propertyHouseNum: '', propertyCity: '',
   leaseMonths: '', leaseStartDate: '', leaseEndDate: '',
   optionMonths: '', optionRentAmount: '',
   rentAmount: '',
@@ -258,7 +259,8 @@ export default function App() {
           <Section title="המושכר">
             <InputField label="מספר חדרים" name="propertyRooms" value={formData.propertyRooms} onChange={handleChange} onlyNumeric />
             <AutocompleteField label="עיר" name="propertyCity" value={formData.propertyCity} onChange={handleChange} suggestions={citiesData} placeholder="הקלד שם עיר..." />
-            <AutocompleteField label="רחוב ומספר" name="propertyAddress" value={formData.propertyAddress} onChange={handleChange} suggestions={formData.propertyCity ? (streetsData[formData.propertyCity] ?? []) : []} placeholder="הקלד שם רחוב..." />
+            <AutocompleteField label="רחוב" name="propertyStreet" value={formData.propertyStreet} onChange={handleChange} suggestions={formData.propertyCity ? (streetsData[formData.propertyCity] ?? []) : []} placeholder="הקלד שם רחוב..." />
+            <InputField label='מספר בית' name="propertyHouseNum" value={formData.propertyHouseNum} onChange={handleChange} onlyDigits placeholder="12" />
             <InputField label="מטרת השכירות" name="purpose" value={formData.purpose} onChange={handleChange} />
             <TextAreaField label="ריהוט וציוד בנכס" name="inventory" value={formData.inventory} onChange={handleChange} />
           </Section>
@@ -352,7 +354,7 @@ export default function App() {
           <div className="space-y-4 mb-8">
             <div className="flex">
               <span className="font-bold w-16 shrink-0">הואיל:</span>
-              <span>והמשכיר הינו בעל הזכויות והמחזיק הבלעדי בדירה/חנות/נכס ובו <B field="propertyRooms" minWidth="min-w-[40px]" /> חדרים. והכתובת <B field="propertyAddress" minWidth="min-w-[150px]" />{formData.propertyCity && <>, <B field="propertyCity" minWidth="min-w-[100px]" /></>} (להלן - "המושכר")</span>
+              <span>והמשכיר הינו בעל הזכויות והמחזיק הבלעדי בדירה/חנות/נכס ובו <B field="propertyRooms" minWidth="min-w-[40px]" /> חדרים. והכתובת <B field="propertyStreet" minWidth="min-w-[140px]" />{formData.propertyHouseNum && <> <B field="propertyHouseNum" minWidth="min-w-[40px]" /></>}{formData.propertyCity && <>, <B field="propertyCity" minWidth="min-w-[100px]" /></>} (להלן - "המושכר")</span>
             </div>
             <div className="flex">
               <span className="font-bold w-16 shrink-0">והואיל:</span>
