@@ -338,7 +338,7 @@ export default function App() {
               <AutocompleteField label="עיר" name="guarantor1City" value={formData.guarantor1City} onChange={handleChange} suggestions={citiesData} placeholder="הקלד שם עיר..." />
               <AutocompleteField label="רחוב" name="guarantor1Street" value={formData.guarantor1Street} onChange={handleChange} suggestions={formData.guarantor1City ? (streetsData[formData.guarantor1City] ?? []) : []} placeholder="הקלד שם רחוב..." />
               <InputField label="מספר בית" name="guarantor1HouseNum" value={formData.guarantor1HouseNum} onChange={handleChange} onlyDigits placeholder="12" />
-              <InputField label="טלפון" name="guarantor1Phone" type="tel" value={formData.guarantor1Phone} onChange={handleChange} />
+              <InputField label="טלפון" name="guarantor1Phone" type="tel" value={formData.guarantor1Phone} onChange={handleChange} onlyDigits maxLength={10} placeholder="0501234567" />
             </div>
             <div className="space-y-3 bg-slate-50 p-3 rounded border mt-4">
               <h4 className="font-bold text-sm text-slate-600">ערב 2</h4>
@@ -347,7 +347,7 @@ export default function App() {
               <AutocompleteField label="עיר" name="guarantor2City" value={formData.guarantor2City} onChange={handleChange} suggestions={citiesData} placeholder="הקלד שם עיר..." />
               <AutocompleteField label="רחוב" name="guarantor2Street" value={formData.guarantor2Street} onChange={handleChange} suggestions={formData.guarantor2City ? (streetsData[formData.guarantor2City] ?? []) : []} placeholder="הקלד שם רחוב..." />
               <InputField label="מספר בית" name="guarantor2HouseNum" value={formData.guarantor2HouseNum} onChange={handleChange} onlyDigits placeholder="12" />
-              <InputField label="טלפון" name="guarantor2Phone" type="tel" value={formData.guarantor2Phone} onChange={handleChange} />
+              <InputField label="טלפון" name="guarantor2Phone" type="tel" value={formData.guarantor2Phone} onChange={handleChange} onlyDigits maxLength={10} placeholder="0501234567" />
             </div>
           </Section>
         </div>
