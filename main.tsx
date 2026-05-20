@@ -11,16 +11,24 @@ interface FormData {
   contractDate: string;
   landlord1Name: string;
   landlord1Id: string;
-  landlord1Address: string;
+  landlord1Street: string;
+  landlord1HouseNum: string;
+  landlord1City: string;
   landlord2Name: string;
   landlord2Id: string;
-  landlord2Address: string;
+  landlord2Street: string;
+  landlord2HouseNum: string;
+  landlord2City: string;
   tenant1Name: string;
   tenant1Id: string;
-  tenant1Address: string;
+  tenant1Street: string;
+  tenant1HouseNum: string;
+  tenant1City: string;
   tenant2Name: string;
   tenant2Id: string;
-  tenant2Address: string;
+  tenant2Street: string;
+  tenant2HouseNum: string;
+  tenant2City: string;
   propertyRooms: string;
   propertyStreet: string;
   propertyHouseNum: string;
@@ -46,11 +54,15 @@ interface FormData {
   additionalD: string;
   guarantor1Name: string;
   guarantor1Id: string;
-  guarantor1Address: string;
+  guarantor1Street: string;
+  guarantor1HouseNum: string;
+  guarantor1City: string;
   guarantor1Phone: string;
   guarantor2Name: string;
   guarantor2Id: string;
-  guarantor2Address: string;
+  guarantor2Street: string;
+  guarantor2HouseNum: string;
+  guarantor2City: string;
   guarantor2Phone: string;
 }
 
@@ -59,10 +71,10 @@ const today = `${String(todayDate.getDate()).padStart(2, '0')}-${String(todayDat
 
 const initialData: FormData = {
   contractCity: '', contractDate: today,
-  landlord1Name: '', landlord1Id: '', landlord1Address: '',
-  landlord2Name: '', landlord2Id: '', landlord2Address: '',
-  tenant1Name: '', tenant1Id: '', tenant1Address: '',
-  tenant2Name: '', tenant2Id: '', tenant2Address: '',
+  landlord1Name: '', landlord1Id: '', landlord1Street: '', landlord1HouseNum: '', landlord1City: '',
+  landlord2Name: '', landlord2Id: '', landlord2Street: '', landlord2HouseNum: '', landlord2City: '',
+  tenant1Name: '', tenant1Id: '', tenant1Street: '', tenant1HouseNum: '', tenant1City: '',
+  tenant2Name: '', tenant2Id: '', tenant2Street: '', tenant2HouseNum: '', tenant2City: '',
   propertyRooms: '', propertyStreet: '', propertyHouseNum: '', propertyCity: '',
   leaseMonths: '', leaseStartDate: '', leaseEndDate: '',
   optionMonths: '', optionRentAmount: '',
@@ -74,8 +86,8 @@ const initialData: FormData = {
   lateFee: '',
   securityDeposit: '',
   additionalA: '', additionalB: '', additionalC: '', additionalD: '',
-  guarantor1Name: '', guarantor1Id: '', guarantor1Address: '', guarantor1Phone: '',
-  guarantor2Name: '', guarantor2Id: '', guarantor2Address: '', guarantor2Phone: ''
+  guarantor1Name: '', guarantor1Id: '', guarantor1Street: '', guarantor1HouseNum: '', guarantor1City: '', guarantor1Phone: '',
+  guarantor2Name: '', guarantor2Id: '', guarantor2Street: '', guarantor2HouseNum: '', guarantor2City: '', guarantor2Phone: ''
 };
 
 const numberToHebrew = (n: number): string => {
@@ -231,13 +243,17 @@ export default function App() {
               <h4 className="font-bold text-sm text-slate-600">משכיר 1</h4>
               <InputField label="שם מלא" name="landlord1Name" value={formData.landlord1Name} onChange={handleChange} onlyLetters />
               <InputField label="ת.ז" name="landlord1Id" value={formData.landlord1Id} onChange={handleChange} maxLength={9} onlyDigits />
-              <InputField label="כתובת" name="landlord1Address" value={formData.landlord1Address} onChange={handleChange} />
+              <AutocompleteField label="עיר" name="landlord1City" value={formData.landlord1City} onChange={handleChange} suggestions={citiesData} placeholder="הקלד שם עיר..." />
+              <AutocompleteField label="רחוב" name="landlord1Street" value={formData.landlord1Street} onChange={handleChange} suggestions={formData.landlord1City ? (streetsData[formData.landlord1City] ?? []) : []} placeholder="הקלד שם רחוב..." />
+              <InputField label="מספר בית" name="landlord1HouseNum" value={formData.landlord1HouseNum} onChange={handleChange} onlyDigits placeholder="12" />
             </div>
             <div className="space-y-3 bg-slate-50 p-3 rounded border">
               <h4 className="font-bold text-sm text-slate-600">משכיר 2 (אופציונלי)</h4>
               <InputField label="שם מלא" name="landlord2Name" value={formData.landlord2Name} onChange={handleChange} onlyLetters />
               <InputField label="ת.ז" name="landlord2Id" value={formData.landlord2Id} onChange={handleChange} maxLength={9} onlyDigits />
-              <InputField label="כתובת" name="landlord2Address" value={formData.landlord2Address} onChange={handleChange} />
+              <AutocompleteField label="עיר" name="landlord2City" value={formData.landlord2City} onChange={handleChange} suggestions={citiesData} placeholder="הקלד שם עיר..." />
+              <AutocompleteField label="רחוב" name="landlord2Street" value={formData.landlord2Street} onChange={handleChange} suggestions={formData.landlord2City ? (streetsData[formData.landlord2City] ?? []) : []} placeholder="הקלד שם רחוב..." />
+              <InputField label="מספר בית" name="landlord2HouseNum" value={formData.landlord2HouseNum} onChange={handleChange} onlyDigits placeholder="12" />
             </div>
           </Section>
 
@@ -246,13 +262,17 @@ export default function App() {
               <h4 className="font-bold text-sm text-slate-600">שוכר 1</h4>
               <InputField label="שם מלא" name="tenant1Name" value={formData.tenant1Name} onChange={handleChange} onlyLetters />
               <InputField label="ת.ז" name="tenant1Id" value={formData.tenant1Id} onChange={handleChange} maxLength={9} onlyDigits />
-              <InputField label="כתובת" name="tenant1Address" value={formData.tenant1Address} onChange={handleChange} />
+              <AutocompleteField label="עיר" name="tenant1City" value={formData.tenant1City} onChange={handleChange} suggestions={citiesData} placeholder="הקלד שם עיר..." />
+              <AutocompleteField label="רחוב" name="tenant1Street" value={formData.tenant1Street} onChange={handleChange} suggestions={formData.tenant1City ? (streetsData[formData.tenant1City] ?? []) : []} placeholder="הקלד שם רחוב..." />
+              <InputField label="מספר בית" name="tenant1HouseNum" value={formData.tenant1HouseNum} onChange={handleChange} onlyDigits placeholder="12" />
             </div>
             <div className="space-y-3 bg-slate-50 p-3 rounded border">
               <h4 className="font-bold text-sm text-slate-600">שוכר 2 (אופציונלי)</h4>
               <InputField label="שם מלא" name="tenant2Name" value={formData.tenant2Name} onChange={handleChange} onlyLetters />
               <InputField label="ת.ז" name="tenant2Id" value={formData.tenant2Id} onChange={handleChange} maxLength={9} onlyDigits />
-              <InputField label="כתובת" name="tenant2Address" value={formData.tenant2Address} onChange={handleChange} />
+              <AutocompleteField label="עיר" name="tenant2City" value={formData.tenant2City} onChange={handleChange} suggestions={citiesData} placeholder="הקלד שם עיר..." />
+              <AutocompleteField label="רחוב" name="tenant2Street" value={formData.tenant2Street} onChange={handleChange} suggestions={formData.tenant2City ? (streetsData[formData.tenant2City] ?? []) : []} placeholder="הקלד שם רחוב..." />
+              <InputField label="מספר בית" name="tenant2HouseNum" value={formData.tenant2HouseNum} onChange={handleChange} onlyDigits placeholder="12" />
             </div>
           </Section>
 
@@ -303,14 +323,18 @@ export default function App() {
               <h4 className="font-bold text-sm text-slate-600">ערב 1</h4>
               <InputField label="שם מלא" name="guarantor1Name" value={formData.guarantor1Name} onChange={handleChange} onlyLetters />
               <InputField label="ת.ז" name="guarantor1Id" value={formData.guarantor1Id} onChange={handleChange} maxLength={9} onlyDigits />
-              <InputField label="כתובת" name="guarantor1Address" value={formData.guarantor1Address} onChange={handleChange} />
+              <AutocompleteField label="עיר" name="guarantor1City" value={formData.guarantor1City} onChange={handleChange} suggestions={citiesData} placeholder="הקלד שם עיר..." />
+              <AutocompleteField label="רחוב" name="guarantor1Street" value={formData.guarantor1Street} onChange={handleChange} suggestions={formData.guarantor1City ? (streetsData[formData.guarantor1City] ?? []) : []} placeholder="הקלד שם רחוב..." />
+              <InputField label="מספר בית" name="guarantor1HouseNum" value={formData.guarantor1HouseNum} onChange={handleChange} onlyDigits placeholder="12" />
               <InputField label="טלפון" name="guarantor1Phone" type="tel" value={formData.guarantor1Phone} onChange={handleChange} />
             </div>
             <div className="space-y-3 bg-slate-50 p-3 rounded border mt-4">
               <h4 className="font-bold text-sm text-slate-600">ערב 2</h4>
               <InputField label="שם מלא" name="guarantor2Name" value={formData.guarantor2Name} onChange={handleChange} onlyLetters />
               <InputField label="ת.ז" name="guarantor2Id" value={formData.guarantor2Id} onChange={handleChange} maxLength={9} onlyDigits />
-              <InputField label="כתובת" name="guarantor2Address" value={formData.guarantor2Address} onChange={handleChange} />
+              <AutocompleteField label="עיר" name="guarantor2City" value={formData.guarantor2City} onChange={handleChange} suggestions={citiesData} placeholder="הקלד שם עיר..." />
+              <AutocompleteField label="רחוב" name="guarantor2Street" value={formData.guarantor2Street} onChange={handleChange} suggestions={formData.guarantor2City ? (streetsData[formData.guarantor2City] ?? []) : []} placeholder="הקלד שם רחוב..." />
+              <InputField label="מספר בית" name="guarantor2HouseNum" value={formData.guarantor2HouseNum} onChange={handleChange} onlyDigits placeholder="12" />
               <InputField label="טלפון" name="guarantor2Phone" type="tel" value={formData.guarantor2Phone} onChange={handleChange} />
             </div>
           </Section>
@@ -332,9 +356,9 @@ export default function App() {
             <div>
               <span className="font-bold">בין: </span>
               <div className="mt-1 pr-6 space-y-1">
-                <div>1. שם: <B field="landlord1Name" minWidth="min-w-[180px]" /> &nbsp;&nbsp; ת.ז: <B field="landlord1Id" minWidth="min-w-[110px]" /> &nbsp;&nbsp; כתובת: <B field="landlord1Address" minWidth="min-w-[200px]" /></div>
+                <div>1. שם: <B field="landlord1Name" minWidth="min-w-[180px]" /> &nbsp;&nbsp; ת.ז: <B field="landlord1Id" minWidth="min-w-[110px]" /> &nbsp;&nbsp; כתובת: <B field="landlord1Street" minWidth="min-w-[120px]" />{formData.landlord1HouseNum && <> <B field="landlord1HouseNum" minWidth="min-w-[30px]" /></>}{formData.landlord1City && <>, <B field="landlord1City" minWidth="min-w-[80px]" /></>}</div>
                 {formData.landlord2Name && (
-                  <div>2. שם: <B field="landlord2Name" minWidth="min-w-[180px]" /> &nbsp;&nbsp; ת.ז: <B field="landlord2Id" minWidth="min-w-[110px]" /> &nbsp;&nbsp; כתובת: <B field="landlord2Address" minWidth="min-w-[200px]" /></div>
+                  <div>2. שם: <B field="landlord2Name" minWidth="min-w-[180px]" /> &nbsp;&nbsp; ת.ז: <B field="landlord2Id" minWidth="min-w-[110px]" /> &nbsp;&nbsp; כתובת: <B field="landlord2Street" minWidth="min-w-[120px]" />{formData.landlord2HouseNum && <> <B field="landlord2HouseNum" minWidth="min-w-[30px]" /></>}{formData.landlord2City && <>, <B field="landlord2City" minWidth="min-w-[80px]" /></>}</div>
                 )}
                 <div className="font-bold pt-1">ביחד ולחוד, מצד אחד (להלן: "המשכיר")</div>
               </div>
@@ -342,9 +366,9 @@ export default function App() {
             <div>
               <span className="font-bold">לבין: </span>
               <div className="mt-1 pr-6 space-y-1">
-                <div>1. שם: <B field="tenant1Name" minWidth="min-w-[180px]" /> &nbsp;&nbsp; ת.ז: <B field="tenant1Id" minWidth="min-w-[110px]" /> &nbsp;&nbsp; כתובת: <B field="tenant1Address" minWidth="min-w-[200px]" /></div>
+                <div>1. שם: <B field="tenant1Name" minWidth="min-w-[180px]" /> &nbsp;&nbsp; ת.ז: <B field="tenant1Id" minWidth="min-w-[110px]" /> &nbsp;&nbsp; כתובת: <B field="tenant1Street" minWidth="min-w-[120px]" />{formData.tenant1HouseNum && <> <B field="tenant1HouseNum" minWidth="min-w-[30px]" /></>}{formData.tenant1City && <>, <B field="tenant1City" minWidth="min-w-[80px]" /></>}</div>
                 {formData.tenant2Name && (
-                  <div>2. שם: <B field="tenant2Name" minWidth="min-w-[180px]" /> &nbsp;&nbsp; ת.ז: <B field="tenant2Id" minWidth="min-w-[110px]" /> &nbsp;&nbsp; כתובת: <B field="tenant2Address" minWidth="min-w-[200px]" /></div>
+                  <div>2. שם: <B field="tenant2Name" minWidth="min-w-[180px]" /> &nbsp;&nbsp; ת.ז: <B field="tenant2Id" minWidth="min-w-[110px]" /> &nbsp;&nbsp; כתובת: <B field="tenant2Street" minWidth="min-w-[120px]" />{formData.tenant2HouseNum && <> <B field="tenant2HouseNum" minWidth="min-w-[30px]" /></>}{formData.tenant2City && <>, <B field="tenant2City" minWidth="min-w-[80px]" /></>}</div>
                 )}
                 <div className="font-bold pt-1">ביחד ולחוד, מצד שני (להלן: "השוכר")</div>
               </div>
@@ -428,21 +452,26 @@ export default function App() {
             <h3 className="text-xl font-bold text-center mb-6">כתב ערבות</h3>
             <p className="mb-6">אנו החתומים מטה ערבים בזה באופן אישי, ביחד ולחוד, לכל התחייבויות השוכר על פי הסכם זה.</p>
             <div className="space-y-8">
-              {[
-                { label: "ערב מס' 1", name: 'guarantor1Name', id: 'guarantor1Id', address: 'guarantor1Address', phone: 'guarantor1Phone' },
-                { label: "ערב מס' 2", name: 'guarantor2Name', id: 'guarantor2Id', address: 'guarantor2Address', phone: 'guarantor2Phone' },
-              ].map(g => (
-                <div key={g.label} className="space-y-4 pr-4 pb-8 print:break-inside-avoid">
-                  <div>
-                    <span className="font-bold">{g.label}: </span>
-                    שם: <B field={g.name as keyof FormData} minWidth="min-w-[160px]" />
-                    &nbsp;&nbsp; ת.ז: <B field={g.id as keyof FormData} minWidth="min-w-[110px]" />
-                    &nbsp;&nbsp; כתובת: <B field={g.address as keyof FormData} minWidth="min-w-[180px]" />
+              {([
+                { label: "ערב מס' 1", num: '1' },
+                { label: "ערב מס' 2", num: '2' },
+              ] as { label: string; num: '1' | '2' }[]).map(({ label, num }) => {
+                const n = (f: string) => `guarantor${num}${f}` as keyof FormData;
+                return (
+                  <div key={label} className="space-y-4 pr-4 pb-8 print:break-inside-avoid">
+                    <div>
+                      <span className="font-bold">{label}: </span>
+                      שם: <B field={n('Name')} minWidth="min-w-[160px]" />
+                      &nbsp;&nbsp; ת.ז: <B field={n('Id')} minWidth="min-w-[110px]" />
+                      &nbsp;&nbsp; כתובת: <B field={n('Street')} minWidth="min-w-[120px]" />
+                      {formData[n('HouseNum')] && <> <B field={n('HouseNum')} minWidth="min-w-[30px]" /></>}
+                      {formData[n('City')] && <>, <B field={n('City')} minWidth="min-w-[80px]" /></>}
+                    </div>
+                    <div>טלפון: <B field={n('Phone')} minWidth="min-w-[130px]" /></div>
+                    <div className="mt-16 flex justify-end">חתימה: <span className="inline-block border-b border-black min-w-[220px] mr-2">&nbsp;</span></div>
                   </div>
-                  <div>טלפון: <B field={g.phone as keyof FormData} minWidth="min-w-[130px]" /></div>
-                  <div className="mt-16 flex justify-end">חתימה: <span className="inline-block border-b border-black min-w-[220px] mr-2">&nbsp;</span></div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
